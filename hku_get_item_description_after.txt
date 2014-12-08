@@ -1,0 +1,45 @@
+/* Created*/
+FUNCTION HKU_GET_ITEM_DESC (p_item_desc VARCHAR2) RETURN VARCHAR2 IS
+  item_desc		varchar2(255);
+  item_quot1_pos	number;
+  item_quot2_pos	number;
+BEGIN
+/* Comment it because it will erase the content before '; ' if
+   Make and/or Model do not exist     --by 30-6-2014
+
+  item_desc := p_item_desc;
+  if item_desc is not null then
+    item_quot1_pos := instr(item_desc, '; ');
+    if item_quot1_pos > 0 then
+      return(substr(item_desc, item_quot1_pos + 2));
+    else
+      return(item_desc);
+    end if;
+  end if;
+  return null;
+
+end comment*/
+
+  /* 	To prevent for the case that even if the item desc does not have 
+	Make and Model information but contains semi-colon, it will return the
+	whole description.  Or, it will return the text after Make and/or model
+	Add by Fanny wong on 30-6-2014 */
+
+  if :po_lines.hku_make is null  then
+    if :po_lines.hku_model is null then
+	return p_item_desc;
+    else
+	return substr(p_item_desc, instr(p_item_desc, '; ') +2);
+    end if;
+
+  else
+
+    if :po_lines.hku_model is null then
+	return substr(p_item_desc, instr(p_item_desc, '; ' )+2);
+    else
+	return substr(p_item_desc, instr(p_item_desc, '; ' ,1, 2 )+2);
+    end if;
+  -- the second occurence ', '
+  end if;
+
+END;
