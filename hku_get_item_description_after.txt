@@ -1,4 +1,4 @@
-/* Created*/
+/* Created for enhancement 1*/
 FUNCTION GET_ITEM_DESC (p_item_desc VARCHAR2) RETURN VARCHAR2 IS
   item_desc		varchar2(255);
   item_quot1_pos	number;
